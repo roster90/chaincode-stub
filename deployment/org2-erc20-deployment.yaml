@@ -17,8 +17,6 @@ spec:
       containers:
         - name: token-org2
           image: metafi/token-cc:0.2.0          
-          command: ["./chaincode"]
-          args: ["--peer.address=peer0-org2:7051"]
           imagePullPolicy: Always
           ports:
             - containerPort: 7052

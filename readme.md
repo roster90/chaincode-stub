@@ -63,13 +63,22 @@ peer lifecycle chaincode commit \
   --cafile $ORDERER_CA
 
 
-  peer chaincode invoke \
+peer chaincode invoke \
   -o orderer:7050 \
+  --ordererTLSHostnameOverride orderer \
   --tls \
   --cafile $ORDERER_CA \
   -C thoaitest \
   -n token \
   --isInit \
-  -c '{"Args":["Initialize"]}' \
+  -c '{"Args":[]}' \
+    --peerAddresses peer0-org2:7051 \
+  --tlsRootCertFiles /organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \
   --peerAddresses peer0-org1:7051 \
   --tlsRootCertFiles /organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+
+
+peer chaincode query -C thoaitest -n token -c '{"Args":["get"]}'
+
+
+  
