@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: token-org2
+  labels:
+    app: token-org2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: token-org2
+  template:
+    metadata:
+      labels:
+        app: token-org2
+    spec:
+      containers:
+        - name: token-org2
+          image: metafi/token-cc:0.1.2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 7052
+          env:
+            - name: CORE_CHAINCODE_ID_NAME
+              value: token:447db05fde5db734b60018782c2a8f987efb5c277d73aa26fed0d52a79b4203b  # <- chỉnh đúng package-id
+            - name: CHAINCODE_SERVER_ADDRESS
+              value: 0.0.0.0:7052
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: token-service-org2
+spec:
+  selector:
+    app: token-org2
+  ports:
+    - port: 7052
+      targetPort: 7052
+      protocol: TCP
+  type: ClusterIP
