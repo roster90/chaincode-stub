@@ -1,16 +1,11 @@
 # This image is a microservice in golang for the Degree chaincode
 FROM golang:1.23 AS builder
 
-# 👇 Buildx tự động cung cấp TARGETOS và TARGETARCH
-ARG TARGETOS
-ARG TARGETARCH
-ENV GOOS=${TARGETOS}
-ENV GOARCH=${TARGETARCH}
 WORKDIR /app
 COPY . .
 
-# build cho đúng platform được truyền vào
-RUN go build -o chaincode .
+# Build for Linux
+RUN GOOS=linux GOARCH=amd64 go build -o chaincode .
 
 # Stage 2: Create a lightweight runtime image
 FROM alpine
