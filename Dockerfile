@@ -4,14 +4,13 @@ FROM golang:1.23 AS builder
 WORKDIR /app
 COPY . .
 
-# Build for Linux
+# Build cho Linux AMD64
 RUN GOOS=linux GOARCH=amd64 go build -o chaincode .
 
-# Stage 2: Create a lightweight runtime image
-FROM alpine
-
+# Stage 2: Runtime
+FROM alpine:3.11
 WORKDIR /app
 COPY --from=builder /app/chaincode .
-
 RUN chmod +x ./chaincode
+
 CMD ["./chaincode"]
