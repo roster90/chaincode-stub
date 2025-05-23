@@ -130,13 +130,24 @@ func GetToken(stub shim.ChaincodeStubInterface) peer.Response {
 
 // Chaincode registers with the Shim on startup
 func main() {
-	fmt.Printf("Started Chaincode. token/v5\n")
+	ccid := os.Getenv("CORE_CHAINCODE_ID_NAME")
 	address := os.Getenv("CHAINCODE_SERVER_ADDRESS")
 
+	fmt.Printf("Started Chaincode. token/v5\n")
 	fmt.Printf("Chaincode server address: %s\n", address)
+	fmt.Printf("Chaincode ID: %s\n", ccid)
 
-	err := shim.Start(new(TokenChaincode))
-	if err != nil {
-		fmt.Printf("Error starting chaincode: %s", err)
+	server := &shim.ChaincodeServer{
+		CCID:    ccid,
+		Address: address,
+		CC:      new(TokenChaincode),
+		TLSProps: shim.TLSProperties{
+			Disabled: true, // nếu bạn chưa bật TLS (để debug đơn giản trước)
+		},
+	}
+
+	if err := server.Start(); err != nil {
+		fmt.Printf("Error starting chaincode: %s\n", err)
+		os.Exit(1)
 	}
 }
