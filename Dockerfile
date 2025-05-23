@@ -4,13 +4,15 @@ FROM golang:1.23 AS builder
 WORKDIR /app
 COPY . .
 
-# Build cho Linux AMD64
-RUN GOOS=linux GOARCH=amd64 go build -o chaincode .
+# ✅ Build static binary để chạy trong slim image
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o chaincode .
 
-# Stage 2: Runtime
-FROM alpine:3.11
+# Runtime stage
+FROM debian:bullseye-slim
+
+COPY --from=builder /app/chaincode /app/chaincode
 WORKDIR /app
-COPY --from=builder /app/chaincode .
+
 RUN chmod +x ./chaincode
 
 CMD ["./chaincode"]
