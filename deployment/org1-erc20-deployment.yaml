@@ -17,7 +17,8 @@ spec:
       containers:
         - name: token-org1
           image: metafi/token-cc:0.2.0
-          args: ["--peer.address=0.0.0.0:7052"]
+          command: ["./chaincode"]
+          args: ["--peer.address=peer0-org1:7051"]
           imagePullPolicy: Always
           ports:
             - containerPort: 7052
@@ -26,6 +27,8 @@ spec:
               value: token:2a69a1a6bd64cce249d464983de13bf8f47e194f940b645ff20a608aab37eda5  # <- chỉnh đúng package-id
             - name: CHAINCODE_SERVER_ADDRESS
               value: 0.0.0.0:7052
+            - name: CORE_PEER_TLS_ENABLED
+              value: "false"
 ---
 apiVersion: v1
 kind: Service
