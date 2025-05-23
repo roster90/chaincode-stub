@@ -122,6 +122,11 @@ func GetToken(stub shim.ChaincodeStubInterface) peer.Response {
 	return shim.Success([]byte(myToken))
 }
 
+// type serverConfig struct {
+// 	CCID    string
+// 	Address string
+// }
+
 // Chaincode registers with the Shim on startup
 func main() {
 	fmt.Printf("Started Chaincode. token/v5\n")

@@ -17,6 +17,7 @@ spec:
       containers:
         - name: token-org1
           image: metafi/token-cc:0.2.0
+          args: ["--peer.address=0.0.0.0:7052"]
           imagePullPolicy: Always
           ports:
             - containerPort: 7052
