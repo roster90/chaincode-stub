@@ -6,6 +6,7 @@ package main
  **/
 import (
 	"fmt"
+	"os"
 
 	// April 2020, Updated for Fabric 2.0
 	// Video may have shim package import for Fabric 1.4 - please ignore
@@ -130,6 +131,10 @@ func GetToken(stub shim.ChaincodeStubInterface) peer.Response {
 // Chaincode registers with the Shim on startup
 func main() {
 	fmt.Printf("Started Chaincode. token/v5\n")
+	address := os.Getenv("CHAINCODE_SERVER_ADDRESS")
+
+	fmt.Printf("Chaincode server address: %s\n", address)
+
 	err := shim.Start(new(TokenChaincode))
 	if err != nil {
 		fmt.Printf("Error starting chaincode: %s", err)
